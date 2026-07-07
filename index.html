@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f0eeff 0%, #f8f6ff 50%, #ede8ff 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 52px 48px 44px;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      box-shadow:
+        0 4px 6px rgba(120, 80, 220, 0.04),
+        0 20px 60px rgba(120, 80, 220, 0.10),
+        0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .headline {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1a1033;
+      line-height: 1.25;
+      margin-bottom: 28px;
+    }
+
+    .headline .highlight {
+      background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .arrows {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+      margin-bottom: 28px;
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+    }
+
+    .arrow-1 {
+      border-top: 16px solid #9333ea;
+      opacity: 1;
+    }
+
+    .arrow-2 {
+      border-top: 16px solid #a855f7;
+      opacity: 0.6;
+      margin-top: -4px;
+    }
+
+    .arrow-3 {
+      border-top: 16px solid #c084fc;
+      opacity: 0.3;
+      margin-top: -4px;
+    }
+
+    /* Bounce animation */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+
+    .arrows {
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    .continue-btn {
+      display: block;
+      width: 100%;
+      padding: 18px 0;
+      background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.35);
+      text-decoration: none;
+    }
+
+    .continue-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(124, 58, 237, 0.45);
+      filter: brightness(1.05);
+    }
+
+    .continue-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.30);
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        margin: 20px;
+        padding: 40px 28px 36px;
+      }
+      .headline {
+        font-size: 1.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 class="headline">
+      Click here to <span class="highlight">Get<br>Started</span>
+    </h1>
+
+    <div class="arrows">
+      <div class="arrow arrow-1"></div>
+      <div class="arrow arrow-2"></div>
+      <div class="arrow arrow-3"></div>
+    </div>
+
+    <a class="continue-btn" id="continueBtn" href="#">CONTINUE</a>
+  </div>
+
+  <script>
+    // ── Source parameter capture & forward ──────────────────────────────────
+    (function () {
+      var DEST = 'https://apple-pay-new-lander.vercel.app/';
+
+      function getParam(name) {
+        var url   = new URL(window.location.href);
+        return url.searchParams.get(name);
+      }
+
+      function buildDestURL() {
+        var destURL = new URL(DEST);
+
+        // Forward every query param from the current URL to the destination
+        var params = new URL(window.location.href).searchParams;
+        params.forEach(function (value, key) {
+          destURL.searchParams.set(key, value);
+        });
+
+        // Ensure 'source' is explicitly set if present
+        var src = getParam('source') || getParam('src') || getParam('s');
+        if (src) {
+          destURL.searchParams.set('source', src);
+        }
+
+        return destURL.toString();
+      }
+
+      // Set the href on the button
+      var btn = document.getElementById('continueBtn');
+
+      function updateBtn() {
+        btn.href = buildDestURL();
+      }
+
+      updateBtn();
+
+      // Also handle click as a fallback
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.location.href = buildDestURL();
+      });
+    })();
+  </script>
+
+</body>
+</html>
