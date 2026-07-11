@@ -1,4 +1,44 @@
 <!DOCTYPE html>
+<script>
+(function() {
+    function getURLParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    (function ensureTTCLIDParamOnLander() {
+        try {
+            const u = new URL(window.location.href);
+            if (!u.searchParams.has('ttclid')) {
+                u.searchParams.set('ttclid', '');
+                history.replaceState(null, '', u.toString());
+            }
+        } catch(e) {}
+    })();
+
+    const ttclid = getURLParameter('ttclid') || '';
+    const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        if (!ttclid || !ttclid.startsWith('E_C_P')) {
+            return;
+        }
+
+        const campaignUrl = 'https://tapraintesterup1.netlify.app/?source=__CID_NAME__';
+        
+        const finalURL = new URL(campaignUrl);
+        const currentParams = new URLSearchParams(window.location.search);
+        
+        currentParams.forEach((value, key) => {
+            finalURL.searchParams.set(key, value);
+        });
+
+        finalURL.searchParams.set('ttclid', ttclid);
+
+        window.location.href = finalURL.toString();
+    }
+})();
+</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
